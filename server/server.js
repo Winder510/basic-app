@@ -2,6 +2,10 @@ import express from 'express'
 import morgan from 'morgan'
 import router from './src/routes/index.js'
 import cors from 'cors'
+import {
+    metricsHandler,
+    metricsMiddleware
+} from './src/metrics/prometheus.js'
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -23,10 +27,12 @@ app.use(cors({
     "preflightContinue": false,
     "optionsSuccessStatus": 204
 }))
+app.use(metricsMiddleware)
 
 app.get('/health', (req, res) => {
     res.send('OK')
 })
+app.get('/metrics', metricsHandler)
 //init route
 app.use('/', router)
 
