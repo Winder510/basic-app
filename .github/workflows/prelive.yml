@@ -2,9 +2,9 @@ name: Prelive CI
 
 on:
   push:
-    branches: [ "prelive" ]
+    branches: ["prelive"]
   pull_request:
-    branches: [ "prelive" ]
+    branches: ["prelive"]
 
 jobs:
   test:
@@ -15,58 +15,58 @@ jobs:
         working-directory: ./server
 
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Use Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
-        cache-dependency-path: './server/package-lock.json'
+      - uses: actions/checkout@v4
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: "./server/package-lock.json"
 
-    - name: Run Database Check Test
-      env:
-        MONGO_URL: ${{ secrets.MONGO_URL }}
-      run: npm run db-check
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Database Check Test
+        env:
+          MONGO_URL: ${{ secrets.MONGO_URL }}
+        run: npm run db-check
 
   build-and-push:
     runs-on: ubuntu-latest
     needs: test
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Login to Docker Hub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build and Push Server Image
-      run: |
-        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/server-prelive:lasted ./server
-        docker push ${{ secrets.DOCKERHUB_USERNAME }}/server-prelive:lasted
+      - name: Build and Push Server Image
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/server-prelive:lastest ./server
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/server-prelive:lastest
 
-    - name: Build and Push Client Image
-      run: |
-        docker build \
-          --build-arg VITE_BACK_END_URL="" \
-          -t ${{ secrets.DOCKERHUB_USERNAME }}/client-prelive:lasted ./client
-        docker push ${{ secrets.DOCKERHUB_USERNAME }}/client-prelive:lasted
+      - name: Build and Push Client Image
+        run: |
+          docker build \
+            --build-arg VITE_BACK_END_URL="" \
+            -t ${{ secrets.DOCKERHUB_USERNAME }}/client-prelive:lastest ./client
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/client-prelive:lastest
 
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-southeast-1
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-1
 
-    - name: Deploy to AWS ECS (Prelive)
-      run: |
-        echo "Updating ECS Prelive Services..."
-        aws ecs update-service --cluster ${{ secrets.CLUSTER_NAME }} --service ${{ secrets.BE_PRELIVE_SERVICE }} --force-new-deployment
-        aws ecs update-service --cluster ${{ secrets.CLUSTER_NAME }} --service ${{ secrets.FE_PRELIVE_SERVICE }} --force-new-deployment
-        echo "Prelive deployment triggered."
+      - name: Deploy to AWS ECS (Prelive)
+        run: |
+          echo "Updating ECS Prelive Services..."
+          aws ecs update-service --cluster ${{ secrets.CLUSTER_NAME }} --service ${{ secrets.BE_PRELIVE_SERVICE }} --force-new-deployment
+          aws ecs update-service --cluster ${{ secrets.CLUSTER_NAME }} --service ${{ secrets.FE_PRELIVE_SERVICE }} --force-new-deployment
+          echo "Prelive deployment triggered."
