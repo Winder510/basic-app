@@ -29,7 +29,7 @@ app.use(cors({
 }))
 app.use(metricsMiddleware)
 
-app.get('/health', (req, res) => {
+app.get('/', (req, res) => {
     res.send('OK')
 })
 app.get('/metrics', metricsHandler)
