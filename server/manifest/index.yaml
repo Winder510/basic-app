@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: backend-basic
+  name: backend-basic-deployment
+  namespace: basic-app
+spec:
+  replicas: 2
+  revisionHistoryLimit: 11
+  selector:
+    matchLabels:
+      app: backend-basic
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: backend-basic
+      namespace: basic-app
+    spec:
+      containers:
+        - image: winder510/be-basic-app
+          imagePullPolicy: Always
+          name: backend-basic
+          envFrom:
+            - configMapRef:
+                name: server-config
+          env:
+            - name: MONGO_URL
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: MONGO_URL
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: API_KEY
+          ports:
+            - containerPort: 8000
+              name: tcp
+              protocol: TCP
+          resources: {}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: backend-basic-ingress
+  namespace: basic-app
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: backend-basic.hgp.vn
+      http:
+        paths:
+          - backend:
+              service:
+                name: backend-basic-service
+                port:
+                  number: 8000
+            path: /
+            pathType: Prefix
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-basic-service
+  namespace: basic-app
+spec:
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+    - name: tcp
+      port: 8000
+      protocol: TCP
+      targetPort: 8000
+  selector:
+    app: backend-basic
+  sessionAffinity: None
+  type: ClusterIP
