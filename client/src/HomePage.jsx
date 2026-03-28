@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
 import axios from "axios";
+import React from "react";
+import { API_URL, API_KEY } from "./config";
 import {
   Container,
   Row,
@@ -14,13 +16,12 @@ import {
   Badge,
   Stack,
 } from "react-bootstrap";
-import React from "react";
 
 const apiClient = axios.create({
-  baseURL: `${import.meta.env.VITE_BACK_END_URL || ''}/api/v1/user`,
+  baseURL: `${API_URL}/api/v1/user`,
   headers: {
-    'x-api-key': import.meta.env.VITE_API_KEY || ''
-  }
+    "x-api-key": API_KEY,
+  },
 });
 
 const HomePage = () => {
@@ -44,7 +45,7 @@ const HomePage = () => {
     setHasSearched(true);
 
     try {
-      const response = await apiClient.get('', {
+      const response = await apiClient.get("", {
         params: { q: search.trim() },
       });
 
@@ -124,7 +125,7 @@ const HomePage = () => {
         ...changes,
       }));
 
-      await apiClient.post('/bulk-update', {
+      await apiClient.post("/bulk-update", {
         users: updatePayload,
       });
 
@@ -342,8 +343,8 @@ const HomePage = () => {
                                     editRows[user.id]?.birthdate ??
                                     (user.birthdate
                                       ? new Date(user.birthdate)
-                                        .toISOString()
-                                        .split("T")[0]
+                                          .toISOString()
+                                          .split("T")[0]
                                       : "")
                                   }
                                   onChange={(e) =>
