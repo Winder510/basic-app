@@ -4,17 +4,19 @@ Node.js + Express + MongoDB
 
 ---
 
-## 🚀 Khởi động nhanh
+## 🚀 Quick Start
 
 ### Local Development
+
 ```bash
 npm install
-npm start           # Chạy với nodemon (auto-reload)
+npm start           # Run with nodemon (auto-reload)
 ```
 
-Server chạy tại `http://localhost:3000`
+Server runs at `http://localhost:3000`
 
 ### Production Docker
+
 ```bash
 docker build -t cinema-backend .
 docker run -p 8000:8000 --env-file .env cinema-backend
@@ -22,7 +24,7 @@ docker run -p 8000:8000 --env-file .env cinema-backend
 
 ---
 
-## 📁 Cấu trúc thư mục
+## 📁 Directory Structure
 
 ```
 src/
@@ -61,12 +63,14 @@ src/
 ## 🔌 API Endpoints
 
 ### Health Check
+
 ```
 GET /
 Response: OK
 ```
 
 ### Users
+
 ```
 GET    /api/users           # List all users
 POST   /api/users           # Create user
@@ -76,6 +80,7 @@ DELETE /api/users/:id       # Delete user
 ```
 
 ### Metrics
+
 ```
 GET /metrics               # Prometheus metrics
 ```
@@ -85,6 +90,7 @@ GET /metrics               # Prometheus metrics
 ## ⚙️ Configuration
 
 ### .env file
+
 ```env
 MONGODB_URI=mongodb://localhost:27017/cinema
 PORT=3000
@@ -92,6 +98,7 @@ NODE_ENV=development
 ```
 
 ### Docker config
+
 - **Port**: 8000 (exposed in docker-compose)
 - **Internal Port**: 3000 (configured in app)
 
@@ -110,6 +117,7 @@ npm run db-check    # Test database connection
 Prometheus metrics endpoint: `/metrics`
 
 **Metrics collected**:
+
 - HTTP request count
 - Request duration
 - Error rates
@@ -134,6 +142,7 @@ Prometheus metrics endpoint: `/metrics`
 ## 🐛 Troubleshooting
 
 ### MongoDB Connection Error
+
 ```bash
 # Check if MongoDB is running
 # Using docker: docker-compose up
@@ -143,12 +152,14 @@ echo $MONGODB_URI
 ```
 
 ### Process already listening
+
 ```bash
 # Find and kill process on port 3000
 lsof -ti:3000 | xargs kill -9
 ```
 
 ### Module not found
+
 ```bash
 # Clean install
 rm -rf node_modules package-lock.json
@@ -159,7 +170,7 @@ npm install
 
 ## 🔐 Security
 
-- CORS enabled for all origins (*)
+- CORS enabled for all origins (\*)
 - Basic authentication middleware included
 - Error handling with proper status codes
 

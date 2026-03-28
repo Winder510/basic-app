@@ -4,16 +4,16 @@ React + Vite + Bootstrap + Tailwind CSS
 
 ---
 
-## 🚀 Khởi động nhanh
+## 🚀 Quick Start
 
 ### Local Development
 
 ```bash
 npm install
-npm run dev           # Chạy Vite dev server
+npm run dev           # Run Vite dev server
 ```
 
-Access tại `http://localhost:5173`
+Access at `http://localhost:5173`
 
 ### Production Build
 
@@ -29,11 +29,11 @@ docker build -t cinema-frontend .
 docker run -p 80:80 cinema-frontend
 ```
 
-Access tại `http://localhost`
+Access at `http://localhost`
 
 ---
 
-## 📁 Cấu trúc thư mục
+## 📁 Directory Structure
 
 ```
 src/

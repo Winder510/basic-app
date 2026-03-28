@@ -1,43 +1,43 @@
 # DevOps Programming Test - Cinema Application
 
-Ứng dụng Quản lý Rạp Chiếu Phim với Backend Node.js + Frontend React
+Cinema Management Application with Node.js Backend + React Frontend
 
 ---
 
-## 📋 Mục Lục
+## 📋 Table of Contents
 
-1. [Giới thiệu](#giới-thiệu)
-2. [Yêu cầu hệ thống](#yêu-cầu-hệ-thống)
-3. [Cài đặt và chạy ở local](#cài-đặt-và-chạy-ở-local)
-4. [Cấu trúc dự án](#cấu-trúc-dự-án)
+1. [Introduction](#introduction)
+2. [System Requirements](#system-requirements)
+3. [Local Setup and Run](#local-setup-and-run)
+4. [Project Structure](#project-structure)
 5. [API Documentation](#api-documentation)
 6. [Docker & Kubernetes](#docker--kubernetes)
 7. [Troubleshooting](#troubleshooting)
 
 ---
 
-## 🎬 Giới thiệu
+## 🎬 Introduction
 
-Dự án này bao gồm:
+This project includes:
 
-- **Backend**: Express.js server với MongoDB
+- **Backend**: Express.js server with MongoDB
 - **Frontend**: React + Vite UI
 - **Monitoring**: Prometheus metrics
 - **Deployment**: Docker & Kubernetes
 
 ---
 
-## 💻 Yêu cầu hệ thống
+## 💻 System Requirements
 
-- Node.js v18+ (hoặc Docker)
-- MongoDB (hoặc sử dụng container)
-- Docker & Docker Compose (tùy chọn)
+- Node.js v18+ (or Docker)
+- MongoDB (or use container)
+- Docker & Docker Compose (optional)
 
 ---
 
-## 🚀 Cài đặt và chạy ở local
+## 🚀 Local Setup and Run
 
-### Cách 1: Chạy với Docker Compose (Dễ nhất)
+### Option 1: Run with Docker Compose (Easiest)
 
 ```bash
 docker-compose up --build
@@ -47,7 +47,7 @@ docker-compose up --build
 - **Backend**: http://localhost:8000
 - **Metrics**: http://localhost:8000/metrics
 
-### Cách 2: Chạy trên máy local
+### Option 2: Run on Local Machine
 
 #### 1. Backend Setup
 
@@ -55,7 +55,7 @@ docker-compose up --build
 cd server
 npm install
 
-# Tạo file .env
+# Create .env file
 cat > .env << EOF
 MONGODB_URI=mongodb://localhost:27017/cinema
 PORT=3000
@@ -64,7 +64,7 @@ EOF
 npm start
 ```
 
-Backend chạy tại `http://localhost:3000`
+Backend runs at `http://localhost:3000`
 
 #### 2. Frontend Setup
 
@@ -72,20 +72,20 @@ Backend chạy tại `http://localhost:3000`
 cd client
 npm install
 
-# Tạo file .env (nếu cần)
+# Create .env file (if needed)
 npm run dev
 ```
 
-Frontend chạy tại `http://localhost:5173` (Vite dev server)
+Frontend runs at `http://localhost:5173` (Vite dev server)
 
 ---
 
-## 📁 Cấu trúc dự án
+## 📁 Project Structure
 
 ```
-├── server/                    # Backend Node.js
+├── server/                    # Node.js Backend
 │   ├── src/
-│   │   ├── controllers/       # Xử lý logic request
+│   │   ├── controllers/       # Request handlers
 │   │   ├── models/            # MongoDB schemas
 │   │   ├── services/          # Business logic
 │   │   ├── routes/            # API routes
@@ -97,7 +97,7 @@ Frontend chạy tại `http://localhost:5173` (Vite dev server)
 │   ├── server.js              # Entry point
 │   └── package.json
 │
-├── client/                    # Frontend React
+├── client/                    # React Frontend
 │   ├── src/
 │   │   ├── HomePage.jsx       # Main page
 │   │   ├── main.jsx           # Entry point
@@ -130,7 +130,7 @@ Frontend chạy tại `http://localhost:5173` (Vite dev server)
 
 #### GET `/api/users`
 
-Lấy danh sách tất cả users
+Get all users list
 
 ```bash
 curl http://localhost:3000/api/users
@@ -138,7 +138,7 @@ curl http://localhost:3000/api/users
 
 #### POST `/api/users`
 
-Tạo user mới
+Create new user
 
 ```bash
 curl -X POST http://localhost:3000/api/users \
@@ -148,7 +148,7 @@ curl -X POST http://localhost:3000/api/users \
 
 #### GET `/api/users/:id`
 
-Lấy thông tin user theo ID
+Get user by ID
 
 ```bash
 curl http://localhost:3000/api/users/123
@@ -156,7 +156,7 @@ curl http://localhost:3000/api/users/123
 
 #### PUT `/api/users/:id`
 
-Cập nhật user
+Update user
 
 ```bash
 curl -X PUT http://localhost:3000/api/users/123 \
@@ -166,7 +166,7 @@ curl -X PUT http://localhost:3000/api/users/123 \
 
 #### DELETE `/api/users/:id`
 
-Xóa user
+Delete user
 
 ```bash
 curl -X DELETE http://localhost:3000/api/users/123
@@ -190,12 +190,12 @@ curl http://localhost:3000/metrics    # Prometheus metrics
 
 ### Docker Compose
 
-Chạy toàn bộ ứng dụng:
+Run entire application:
 
 ```bash
-docker-compose up --build          # Khởi động
-docker-compose down                # Dừng
-docker-compose logs -f             # Xem logs
+docker-compose up --build          # Start
+docker-compose down                # Stop
+docker-compose logs -f             # View logs
 ```
 
 ### Docker Individual Build
@@ -210,21 +210,21 @@ docker build -t cinema-frontend ./client
 
 ### Kubernetes Deployment
 
-**Deploy**: Gửi manifest sang server K8s
+**Deploy**: Send manifest to K8s server
 
 ```bash
 scp -r ./manifest/ devops@192.168.1.121:~/projects
 kubectl apply -f manifest/
 ```
 
-**Kiểm tra pods**:
+**Check pods**:
 
 ```bash
 kubectl get pods -n cinema
 kubectl logs -f deployment/backend -n cinema
 ```
 
-**Xóa deployment**:
+**Delete deployment**:
 
 ```bash
 kubectl delete -f manifest/
@@ -255,7 +255,7 @@ npm run lint
 ### Prometheus Metrics
 
 - **Endpoint**: `http://localhost:3000/metrics`
-- **Metrics cung cấp**:
+- **Metrics provided**:
   - Request count
   - Request duration
   - Error rates
@@ -283,25 +283,25 @@ VITE_API_URL=http://localhost:3000
 
 ## 🐛 Troubleshooting
 
-### 1. Lỗi kết nối MongoDB
+### 1. MongoDB Connection Error
 
 ```
 Error: connect ECONNREFUSED 127.0.0.1:27017
 ```
 
-**Giải pháp**:
+**Solution**:
 
-- Chắc chắn MongoDB đang chạy
-- Kiểm tra MONGODB_URI trong .env
-- Nếu dùng Docker: `docker-compose up`
+- Ensure MongoDB is running
+- Check MONGODB_URI in .env
+- If using Docker: `docker-compose up`
 
-### 2. Port đã được sử dụng
+### 2. Port Already in Use
 
 ```
 Error: listen EADDRINUSE :::3000
 ```
 
-**Giải pháp**:
+**Solution**:
 
 ```bash
 # Kill process on port 3000
@@ -311,27 +311,27 @@ netstat -ano | findstr :3000          # Windows
 
 ### 3. CORS Error
 
-**Giải pháp**: Backend đã cấu hình CORS cho tất cả origin (`*`)
+**Solution**: Backend is configured with CORS for all origins (`*`)
 
-### 4. Vite Frontend không tìm thấy Backend
+### 4. Frontend can't find Backend
 
-**Giải pháp**: Cập nhật `VITE_API_URL` trong `client/.env`
+**Solution**: Update `VITE_API_URL` in `client/.env`
 
 ---
 
-## 📝 Scripts chính
+## 📝 Main Scripts
 
 ### Backend
 
 ```bash
-npm start           # Chạy server (nodemon auto-reload)
+npm start           # Run server (nodemon auto-reload)
 npm run db-check    # Test database connection
 ```
 
 ### Frontend
 
 ```bash
-npm run dev      # Chạy dev server (Vite)
+npm run dev      # Run dev server (Vite)
 npm run build    # Build production
 npm run lint     # ESLint check
 npm run preview  # Preview production build
@@ -339,7 +339,7 @@ npm run preview  # Preview production build
 
 ---
 
-## 📦 Dependencies chính
+## 📦 Main Dependencies
 
 ### Backend
 
@@ -372,10 +372,10 @@ ISC
 
 ## 📞 Support
 
-Nếu có vấn đề, vui lòng:
+If you have issues, please:
 
-1. Kiểm tra logs: `docker-compose logs`
-2. Xem file `.env` configuration
-3. Kiểm tra network connectivity
+1. Check logs: `docker-compose logs`
+2. Review `.env` configuration
+3. Check network connectivity
 
 **Happy Coding! 🚀**

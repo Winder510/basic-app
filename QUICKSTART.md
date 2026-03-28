@@ -1,12 +1,12 @@
 # QUICK REFERENCE - Cinema DevOps
 
-Tài liệu tham khảo nhanh cho Cinema Application
+Quick reference guide for Cinema Application
 
 ---
 
-## 🎯 Chế độ chạy ứng dụng
+## 🎯 Application Run Modes
 
-### 1️⃣ Cách Dễ Nhất: Docker Compose
+### 1️⃣ Easiest Way: Docker Compose
 
 ```bash
 docker-compose up --build
