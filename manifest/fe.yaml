@@ -23,7 +23,7 @@ spec:
       namespace: basic-app
     spec:
       containers:
-        - image: winder510/fe-basic-app
+        - image: winder510/fe-basic-app:lastest
           imagePullPolicy: Always
           name: frontend-basic
           envFrom:
